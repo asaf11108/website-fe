@@ -1,0 +1,7 @@
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    @media (min-width: 600px) {
+        gap: 40px;
+    }
+}

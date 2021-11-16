@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+    <div class="filters">
+        <mat-form-field>
+            <mat-label>Filter by Website ID</mat-label>
+            <input matInput [formControl]="controls.query" autocomplete="off" type="search" #input>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="controls.date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <app-table [columns]="columns" [data]="websites$ | async | filterBy:['websiteId']:input.value" [loading]="loading$ | async">
+    </app-table>
+</form>
