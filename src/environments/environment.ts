@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  feUrl: 'http://localhost:4200/',
+  apiUrl: 'http://localhost:3333/api/',
+  audience: 'https://asaf-nx-api.herokuapp.com/'
 };
 
 /*

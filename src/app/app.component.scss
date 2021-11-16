@@ -1,0 +1,22 @@
+@mixin position($pos) {
+  position: fixed;
+  top: $pos;
+  left: $pos;
+  transform: translate(-50%, -50%);
+}
+
+.page {
+  @include position(50%);
+}
+
+.repository {
+  @include position(95%);
+  img {
+    width: 50px;
+    height: 50px;
+  }
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
