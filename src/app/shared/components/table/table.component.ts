@@ -30,8 +30,27 @@ export class TableComponent<T> implements OnInit {
 
   @ViewChild('dateTmpl', { static: true }) dateTmpl: TemplateRef<any>;
   @ViewChild('numberTmpl', { static: true }) numberTmpl: TemplateRef<any>;
+
+  @Input() data: T[] = [];
+  @Input() loading: boolean;
   @Input('columns') set _columns(columns: ITableColumn[]) {
-    this.columns = columns.map((col) => {
+    this.columns = this.buildColumns(columns);
+  }
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
+
+  ngOnInit(): void {
+    const COLUMN_WIDTH = 200;
+    const WIDTH_OFFSET = 50;
+    this.breakpointObserver.observe(Breakpoints.XSmall).subscribe((obs) => {
+      this.view = obs.matches
+        ? [COLUMN_WIDTH + WIDTH_OFFSET, 500]
+        : [COLUMN_WIDTH * this.columns.length + WIDTH_OFFSET, 700];
+    });
+  }
+
+  private buildColumns(columns: ITableColumn[]): TableColumn[] {
+    return columns.map((col) => {
       let cellTemplate: TemplateRef<any>;
       switch (col.columnType) {
         case ColumnType.Number:
@@ -45,20 +64,6 @@ export class TableComponent<T> implements OnInit {
         ...omit(col, 'columnType'),
         cellTemplate,
       };
-    });
-  }
-  @Input() data: T[] = [];
-  @Input() loading: boolean;
-
-  constructor(private breakpointObserver: BreakpointObserver) {}
-
-  ngOnInit(): void {
-    const COLUMN_WIDTH = 200;
-    const WIDTH_OFFSET = 50;
-    this.breakpointObserver.observe(Breakpoints.XSmall).subscribe((obs) => {
-      this.view = obs.matches
-        ? [COLUMN_WIDTH + WIDTH_OFFSET, 500]
-        : [COLUMN_WIDTH * this.columns.length + WIDTH_OFFSET, 700];
     });
   }
 }
