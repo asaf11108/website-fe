@@ -30,7 +30,7 @@ export class MainComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    const url = environment.apiUrl + 'reports/get/';
+    const url = environment.apiUrl + 'reports/';
     this.websites$ = this.controls.date.valueChanges.pipe(
       startWith(this.controls.date.value),
       tap(() => this.loading$.next(true)),
