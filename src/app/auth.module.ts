@@ -6,7 +6,7 @@ import { AuthModule as Auth0Module } from '@auth0/auth0-angular';
   imports: [
     Auth0Module.forRoot({
       domain: 'dev-u314zv4o.us.auth0.com',
-      clientId: 'WUUT9XogCwlcJtu9KMv79nKY0QI1iKZy',
+      clientId: 'fTGQpEVsSqfPnv2d5IUiNd95c2injPCE',
       redirectUri: environment.feUrl,
       errorPath: '/login',
       httpInterceptor: {
