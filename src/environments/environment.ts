@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   feUrl: 'http://localhost:4200/',
   apiUrl: 'http://localhost:3333/api/',
-  audience: 'https://asaf-nx-api.herokuapp.com/'
+  audience: 'https://asaf-websites.herokuapp.com/'
 };
 
 /*

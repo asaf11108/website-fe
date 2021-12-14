@@ -1,10 +1,11 @@
+import { PeopleService } from './../shared/api/services/people.service';
 import { catchError, startWith, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Website } from '../shared/api/website';
+import { Person } from '../shared/api/model/person';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -24,25 +25,24 @@ export class MainComponent implements OnInit {
   };
 
   columns = TABLE_CONFIG;
-  websites$: Observable<Website[]>;
+  poeple$: Observable<Person[]>;
   loading$ = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) {}
+  constructor(private peopleService: PeopleService) {}
 
   ngOnInit(): void {
-    const url = environment.apiUrl + 'reports/';
-    this.websites$ = this.controls.date.valueChanges.pipe(
+    this.poeple$ = this.controls.date.valueChanges.pipe(
       startWith(this.controls.date.value),
       tap(() => this.loading$.next(true)),
       switchMap((date: Date) =>
         date
-          ? this.http.get<Website[]>(url + new Date(Date.UTC(date.getFullYear(),date.getMonth(), date.getDate())).getTime())
-          : this.http.get<Website[]>(url + 'allData')
+          ? this.peopleService.getPeopleByTime(new Date(Date.UTC(date.getFullYear(),date.getMonth(), date.getDate())).getTime())
+          : this.peopleService.getPeople()
       ),
       tap(() => this.loading$.next(false)),
       catchError(err => {
         this.loading$.next(false);
-        return throwError(() => err);
+        return throwError(err);
       })
     );
   }

@@ -12,6 +12,6 @@
         </mat-form-field>
     </div>
 
-    <app-table [columns]="columns" [data]="websites$ | async | filterBy:['websiteId']:input.value" [loading]="loading$ | async">
+    <app-table [columns]="columns" [data]="poeple$ | async | filterBy:['id']:input.value" [loading]="loading$ | async">
     </app-table>
 </form>
