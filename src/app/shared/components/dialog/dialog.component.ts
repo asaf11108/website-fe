@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-dialog-person',
-  templateUrl: './dialog-person.component.html',
-  styleUrls: ['./dialog-person.component.scss'],
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DialogPersonComponent implements OnInit {
+export class DialogComponent implements OnInit {
 
   constructor() { }
 

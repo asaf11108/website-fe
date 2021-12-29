@@ -1,4 +1,3 @@
-import { DialogPersonComponent } from './../shared/components/dialog-person/dialog-person.component';
 import { PeopleService } from './../shared/api/services/people.service';
 import { catchError, startWith, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
@@ -7,6 +6,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Person } from '../shared/api/model/person';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
   onTableClick(event) {
     switch (event.column.prop) {
       case 'edit':
-        const dialogRef = this.dialog.open(DialogPersonComponent);
+        const dialogRef = this.dialog.open(DialogComponent);
         dialogRef.afterClosed().subscribe(result => {
           console.log(`Dialog result: ${result}`);
         });

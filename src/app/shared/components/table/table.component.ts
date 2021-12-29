@@ -69,7 +69,7 @@ export class TableComponent<T> implements OnInit {
           cellTemplate = this.iconRef;
       }
       return {
-        ...omit(col, 'columnType'),
+        ...omit(col, 'type'),
         cellTemplate,
       };
     });
