@@ -2,13 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from './components/table/table.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { LayoutModule } from '@angular/cdk/layout';
+import { MaterialModule } from './material.module.';
 
 const components = [TableComponent];
 
 @NgModule({
-  imports: [CommonModule, NgxDatatableModule, LayoutModule],
+  imports: [
+    CommonModule,
+    NgxDatatableModule,
+    MaterialModule
+  ],
   declarations: [...components],
-  exports: [...components],
+  exports: [...components, MaterialModule],
 })
 export class SharedModule {}

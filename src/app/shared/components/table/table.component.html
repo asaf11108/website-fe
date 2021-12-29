@@ -1,12 +1,18 @@
-<ngx-datatable [rows]="data" [columns]="columns" [columnMode]="ColumnMode.standard" [headerHeight]="50" [rowHeight]="30"
+<ngx-datatable [rows]="data" [columns]="columns" [columnMode]="ColumnMode.standard" [headerHeight]="50" [rowHeight]="50"
   [loadingIndicator]="loading" [scrollbarV]="true" [scrollbarH]="true" [virtualization]="true"
   [style.width.px]="view[0]" [style.height.px]="view[1]">
 </ngx-datatable>
 
-<ng-template #numberTmpl let-row="row" let-value="value">
+<ng-template #numberRef let-row="row" let-value="value">
   {{ value | number }}
 </ng-template>
 
-<ng-template #dateTmpl let-row="row" let-value="value">
+<ng-template #dateRef let-row="row" let-value="value">
   {{ value | date }}
+</ng-template>
+
+<ng-template #iconRef let-row="row" let-value="value" let-column="column">
+  <button mat-icon-button>
+    <mat-icon>{{ column.prop }}</mat-icon>
+  </button>
 </ng-template>

@@ -28,8 +28,9 @@ export class TableComponent<T> implements OnInit {
   view: [number, number];
   columns: TableColumn[] = [];
 
-  @ViewChild('dateTmpl', { static: true }) dateTmpl: TemplateRef<any>;
-  @ViewChild('numberTmpl', { static: true }) numberTmpl: TemplateRef<any>;
+  @ViewChild('dateRef', { static: true }) dateRef: TemplateRef<any>;
+  @ViewChild('numberRef', { static: true }) numberRef: TemplateRef<any>;
+  @ViewChild('iconRef', { static: true }) iconRef: TemplateRef<any>;
 
   @Input() data: T[] = [];
   @Input() loading: boolean;
@@ -40,25 +41,25 @@ export class TableComponent<T> implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
-    const COLUMN_WIDTH = 200;
-    const WIDTH_OFFSET = 50;
     this.breakpointObserver.observe(Breakpoints.XSmall).subscribe((obs) => {
       this.view = obs.matches
-        ? [COLUMN_WIDTH + WIDTH_OFFSET, 500]
-        : [COLUMN_WIDTH * this.columns.length + WIDTH_OFFSET, 700];
+        ? [250, 500]
+        : [this.columns.reduce((acc, col) => acc + col.width, 0) + 50, 700];
     });
   }
 
   private buildColumns(columns: ITableColumn[]): TableColumn[] {
     return columns.map((col) => {
       let cellTemplate: TemplateRef<any>;
-      switch (col.columnType) {
+      switch (col.type) {
         case ColumnType.Number:
-          cellTemplate = this.numberTmpl;
+          cellTemplate = this.numberRef;
           break;
         case ColumnType.Date:
-          cellTemplate = this.dateTmpl;
+          cellTemplate = this.dateRef;
           break;
+        case ColumnType.Icon:
+          cellTemplate = this.iconRef;
       }
       return {
         ...omit(col, 'columnType'),

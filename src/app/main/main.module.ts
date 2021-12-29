@@ -7,9 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -20,9 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     ReactiveFormsModule,
     NgPipesModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatIconModule
   ],
   declarations: [MainComponent],
 })
