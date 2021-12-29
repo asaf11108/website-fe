@@ -1,6 +1,6 @@
 <ngx-datatable [rows]="data" [columns]="columns" [columnMode]="ColumnMode.standard" [headerHeight]="50" [rowHeight]="50"
   [loadingIndicator]="loading" [scrollbarV]="true" [scrollbarH]="true" [virtualization]="true"
-  [style.width.px]="view[0]" [style.height.px]="view[1]">
+  [style.width.px]="view[0]" [style.height.px]="view[1]" (activate)="onActivateClick($event)">
 </ngx-datatable>
 
 <ng-template #numberRef let-row="row" let-value="value">

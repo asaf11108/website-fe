@@ -1,12 +1,12 @@
+import { DialogPersonComponent } from './../shared/components/dialog-person/dialog-person.component';
 import { PeopleService } from './../shared/api/services/people.service';
 import { catchError, startWith, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
-import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Person } from '../shared/api/model/person';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-main',
@@ -28,7 +28,7 @@ export class MainComponent implements OnInit {
   poeple$: Observable<Person[]>;
   loading$ = new BehaviorSubject<boolean>(true);
 
-  constructor(private peopleService: PeopleService) {}
+  constructor(private peopleService: PeopleService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.poeple$ = this.controls.date.valueChanges.pipe(
@@ -45,5 +45,16 @@ export class MainComponent implements OnInit {
         return throwError(err);
       })
     );
+  }
+
+  onTableClick(event) {
+    switch (event.column.prop) {
+      case 'edit':
+        const dialogRef = this.dialog.open(DialogPersonComponent);
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog result: ${result}`);
+        });
+        break;
+    }
   }
 }

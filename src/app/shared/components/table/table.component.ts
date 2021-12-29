@@ -6,6 +6,8 @@ import {
   ViewEncapsulation,
   ViewChild,
   TemplateRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -37,6 +39,7 @@ export class TableComponent<T> implements OnInit {
   @Input('columns') set _columns(columns: ITableColumn[]) {
     this.columns = this.buildColumns(columns);
   }
+  @Output() tableClick: EventEmitter<any> = new EventEmitter();
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
@@ -46,6 +49,10 @@ export class TableComponent<T> implements OnInit {
         ? [250, 500]
         : [this.columns.reduce((acc, col) => acc + col.width, 0) + 50, 700];
     });
+  }
+
+  onActivateClick(event): void {
+    event.type === 'click' && this.tableClick.emit(event);
   }
 
   private buildColumns(columns: ITableColumn[]): TableColumn[] {
