@@ -7,6 +7,7 @@ import { Person } from '../shared/api/model/person';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/components/dialog/dialog.component';
+import { omit } from 'lodash';
 
 @Component({
   selector: 'app-main',
@@ -50,9 +51,10 @@ export class MainComponent implements OnInit {
   onTableClick(event) {
     switch (event.column.prop) {
       case 'edit':
-        const dialogRef = this.dialog.open(DialogComponent);
+        const person = omit(event.row, 'id');
+        const dialogRef = this.dialog.open(DialogComponent, { data: person });
         dialogRef.afterClosed().subscribe(result => {
-          console.log(`Dialog result: ${result}`);
+          console.log(result);
         });
         break;
     }
