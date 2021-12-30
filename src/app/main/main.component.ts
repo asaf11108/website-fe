@@ -1,6 +1,6 @@
 import { PeopleService } from './../shared/api/services/people.service';
-import { catchError, startWith, switchMap, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, filter, finalize, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Person } from '../shared/api/model/person';
@@ -8,7 +8,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/components/dialog/dialog.component';
 import { omit } from 'lodash';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { tapCatch } from '../shared/util/custom-rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -26,26 +29,24 @@ export class MainComponent implements OnInit {
   };
 
   columns = TABLE_CONFIG;
-  poeple$: Observable<Person[]>;
+  poeple$ = new BehaviorSubject<Person[]>([]);
   loading$ = new BehaviorSubject<boolean>(true);
 
-  constructor(private peopleService: PeopleService, private dialog: MatDialog) {}
+  constructor(private peopleService: PeopleService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.poeple$ = this.controls.date.valueChanges.pipe(
+    this.controls.date.valueChanges.pipe(
       startWith(this.controls.date.value),
       tap(() => this.loading$.next(true)),
       switchMap((date: Date) =>
         date
-          ? this.peopleService.getPeopleByTime(new Date(Date.UTC(date.getFullYear(),date.getMonth(), date.getDate())).getTime())
+          ? this.peopleService.getPeopleByTime(new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).getTime())
           : this.peopleService.getPeople()
       ),
-      tap(() => this.loading$.next(false)),
-      catchError(err => {
-        this.loading$.next(false);
-        return throwError(err);
-      })
-    );
+      tap(people => this.poeple$.next(people)),
+      tapCatch(() => this.loading$.next(false)),
+      untilDestroyed(this)
+    ).subscribe();
   }
 
   onTableClick(event) {
@@ -58,5 +59,17 @@ export class MainComponent implements OnInit {
         });
         break;
     }
+  }
+
+  openNewPersonDialog() {
+    const person: Partial<Person> = { birthDate: '', email: '', firstName: '', gender: '', lastName: '' };
+    const dialogRef = this.dialog.open(DialogComponent, { data: person });
+    dialogRef.afterClosed().pipe(
+      filter(Boolean),
+      switchMap(person => this.peopleService.postPerson(person)),
+      withLatestFrom(this.poeple$),
+      tap((([_, people]) => this.poeple$.next(people.concat(person as Person)))),
+      untilDestroyed(this)
+    ).subscribe();
   }
 }

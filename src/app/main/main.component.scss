@@ -1,5 +1,6 @@
 .filters {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     @media (min-width: 600px) {
         gap: 40px;

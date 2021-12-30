@@ -10,6 +10,10 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="openNewPersonDialog()">
+            Add Person
+        </button>
     </div>
 
     <app-table [columns]="columns" [data]="poeple$ | async | filterBy:['id']:input.value" [loading]="loading$ | async" (tableClick)="onTableClick($event)">

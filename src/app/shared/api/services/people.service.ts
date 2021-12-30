@@ -1,3 +1,4 @@
+import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from './../../../../environments/environment';
@@ -18,5 +19,9 @@ export class PeopleService {
 
   getPeopleByTime(id: number): Observable<Person[]> {
     return this.http.get<Person[]>(`${this.url}/${id}`);
+  }
+
+  postPerson(person: Partial<Person>) {
+    return this.http.post(this.url, person);
   }
 }
