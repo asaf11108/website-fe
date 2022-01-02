@@ -10,6 +10,7 @@ import { DialogComponent } from '../shared/components/dialog/dialog.component';
 import { omit } from 'lodash';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tapCatch } from '../shared/util/custom-rxjs';
+import { formatISO, startOfDay } from 'date-fns';
 
 @UntilDestroy()
 @Component({
@@ -40,7 +41,7 @@ export class MainComponent implements OnInit {
       tap(() => this.loading$.next(true)),
       switchMap((date: Date) =>
         date
-          ? this.peopleService.getPersonByBirthDate(date.toISOString())
+          ? this.peopleService.getPersonByBirthDate(formatISO(date, { representation: 'date' }))
           : this.peopleService.getPeople()
       ),
       tap(people => this.poeple$.next(people)),
