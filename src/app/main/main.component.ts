@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
       tap(() => this.loading$.next(true)),
       switchMap((date: Date) =>
         date
-          ? this.peopleService.getPeopleByTime(new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).getTime())
+          ? this.peopleService.getPersonByBirthDate(date.toISOString())
           : this.peopleService.getPeople()
       ),
       tap(people => this.poeple$.next(people)),

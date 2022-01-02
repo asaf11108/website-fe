@@ -9,7 +9,7 @@ import { Person } from '../model/person';
   providedIn: 'root'
 })
 export class PeopleService {
-  url = environment.apiUrl + 'people/';
+  url = environment.apiUrl + 'people';
 
   constructor(private http: HttpClient) { }
 
@@ -17,8 +17,10 @@ export class PeopleService {
     return this.http.get<Person[]>(this.url);
   }
 
-  getPeopleByTime(id: number): Observable<Person[]> {
-    return this.http.get<Person[]>(`${this.url}/${id}`);
+  getPersonByBirthDate(date: string): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.url}`, {
+      params: { birthDate: date }
+    });
   }
 
   postPerson(person: Partial<Person>) {
