@@ -24,10 +24,10 @@ export class PeopleService {
   }
 
   postPerson(person: Partial<Person>) {
-    return this.http.post(this.url, person);
+    return this.http.post<Person>(this.url, person);
   }
 
   patchPerson(id: number, person: Omit<Person, 'id'>) {
-    return this.http.patch(`${this.url}/${id}`, person);
+    return this.http.patch<void>(`${this.url}/${id}`, person);
   }
 }

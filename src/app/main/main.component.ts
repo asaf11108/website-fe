@@ -1,6 +1,6 @@
 import { PeopleService } from './../shared/api/services/people.service';
-import { catchError, filter, finalize, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { BehaviorSubject, ObservableInput, throwError } from 'rxjs';
+import { filter, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, ObservableInput } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Person } from '../shared/api/model/person';
@@ -10,7 +10,7 @@ import { DialogComponent } from '../shared/components/dialog/dialog.component';
 import { omit } from 'lodash';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tapCatch } from '../shared/util/custom-rxjs';
-import { formatISO, startOfDay } from 'date-fns';
+import { formatISO } from 'date-fns';
 
 @UntilDestroy()
 @Component({
@@ -78,7 +78,7 @@ export class MainComponent implements OnInit {
       filter(Boolean),
       switchMap(person => this.peopleService.postPerson(person)),
       withLatestFrom(this.poeple$),
-      tap((([_, people]) => this.poeple$.next(people.concat(person as Person)))),
+      tap((([person, people]) => this.poeple$.next(people.concat(person)))),
       untilDestroyed(this)
     ).subscribe();
   }
