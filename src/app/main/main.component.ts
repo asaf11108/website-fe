@@ -1,6 +1,6 @@
 import { PeopleService } from './../shared/api/services/people.service';
-import { catchError, filter, finalize, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, filter, finalize, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, ObservableInput, throwError } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Person } from '../shared/api/model/person';
@@ -54,10 +54,19 @@ export class MainComponent implements OnInit {
     switch (event.column.prop) {
       case 'edit':
         const person = omit(event.row, 'id');
+        const id = event.row.id;
         const dialogRef = this.dialog.open(DialogComponent, { data: person });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log(result);
-        });
+        dialogRef.afterClosed().pipe(
+          tap(() => this.loading$.next(true)),
+          switchMap<Person, ObservableInput<Person>>(person => this.peopleService.patchPerson(event.row.id, person).pipe(mapTo(person))),
+          withLatestFrom(this.poeple$),
+          tap((([person, people]) => {
+            const index = people.findIndex(person => person.id === id);
+            people[index] = { ...person, id};
+            this.poeple$.next([...people]);
+          })),
+          tapCatch(() => this.loading$.next(false)),
+        ).subscribe();
         break;
     }
   }
