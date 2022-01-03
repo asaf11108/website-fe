@@ -7,5 +7,6 @@ export const TABLE_CONFIG: ITableColumn[] = [
     { prop: 'email', name: 'Email', width: 300, type: ColumnType.Text },
     { prop: 'gender', name: 'Gender', width: 100, type: ColumnType.Text },
     { prop: 'birthDate', name: 'Birth Date', width: 150, type: ColumnType.Date },
-    { prop: 'edit', width: 50, type: ColumnType.Icon }
+    { prop: 'edit', width: 50, type: ColumnType.Icon },
+    { prop: 'delete', width: 50, type: ColumnType.Icon }
 ];

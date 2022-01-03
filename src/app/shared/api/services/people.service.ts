@@ -30,4 +30,8 @@ export class PeopleService {
   patchPerson(id: number, person: Omit<Person, 'id'>) {
     return this.http.patch<void>(`${this.url}/${id}`, person);
   }
+
+  deletePerson(id: number) {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 }
