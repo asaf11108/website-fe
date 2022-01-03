@@ -51,10 +51,10 @@ export class MainComponent implements OnInit {
   }
 
   onTableClick(event) {
+    const person = omit(event.row, 'id');
+    const id = event.row.id;
     switch (event.column.prop) {
       case 'edit':
-        const person = omit(event.row, 'id');
-        const id = event.row.id;
         const dialogRef = this.dialog.open(DialogComponent, { data: person });
         dialogRef.afterClosed().pipe(
           tap(() => this.loading$.next(true)),
@@ -63,6 +63,18 @@ export class MainComponent implements OnInit {
           tap((([person, people]) => {
             const index = people.findIndex(person => person.id === id);
             people[index] = { ...person, id};
+            this.poeple$.next([...people]);
+          })),
+          tapCatch(() => this.loading$.next(false)),
+        ).subscribe();
+        break;
+      case 'delete':
+        this.loading$.next(true)
+        this.peopleService.deletePerson(id).pipe(
+          withLatestFrom(this.poeple$),
+          tap((([_, people]) => {
+            const index = people.findIndex(person => person.id === id);
+            people.splice(index, 1);
             this.poeple$.next([...people]);
           })),
           tapCatch(() => this.loading$.next(false)),
