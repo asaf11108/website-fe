@@ -11,4 +11,5 @@ export interface Person {
     email: string;
     gender: string;
     birthDate: string;
+    car_id?: number;
 }

@@ -1,3 +1,4 @@
+import { CarService } from './../shared/api/services/car.service';
 import { PeopleService } from './../shared/api/services/people.service';
 import { filter, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, ObservableInput } from 'rxjs';
@@ -11,6 +12,7 @@ import { omit } from 'lodash';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tapCatch } from '../shared/util/custom-rxjs';
 import { formatISO } from 'date-fns';
+import { Car } from '../shared/api/model/car';
 
 @UntilDestroy()
 @Component({
@@ -32,8 +34,13 @@ export class MainComponent implements OnInit {
   columns = TABLE_CONFIG;
   poeple$ = new BehaviorSubject<Person[]>([]);
   loading$ = new BehaviorSubject<boolean>(true);
+  cars: Car[];
 
-  constructor(private peopleService: PeopleService, private dialog: MatDialog) { }
+  constructor(
+    private peopleService: PeopleService,
+    private carService: CarService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.controls.date.valueChanges.pipe(
@@ -48,6 +55,8 @@ export class MainComponent implements OnInit {
       tapCatch(() => this.loading$.next(false)),
       untilDestroyed(this)
     ).subscribe();
+
+    this.carService.getCars().subscribe(cars => this.cars = cars);
   }
 
   onTableClick(event) {
@@ -84,7 +93,7 @@ export class MainComponent implements OnInit {
   }
 
   openNewPersonDialog() {
-    const person: Partial<Person> = { birthDate: '', email: '', firstName: '', gender: '', lastName: '' };
+    const person: Partial<Person> = { birthDate: '2009-08-04', email: 'dsf@dfg.com', firstName: 'sdfefw', gender: 'female', lastName: 'fdfd' };
     const dialogRef = this.dialog.open(DialogComponent, { data: person });
     dialogRef.afterClosed().pipe(
       filter(Boolean),
