@@ -17,6 +17,10 @@ export class PeopleService {
     return this.http.get<Person[]>(this.url);
   }
 
+  getPerson(id: number): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.url}/${id}`);
+  }
+
   getPersonByBirthDate(date: string): Observable<Person[]> {
     return this.http.get<Person[]>(`${this.url}`, {
       params: { birthDate: date }

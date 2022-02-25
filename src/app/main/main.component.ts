@@ -93,7 +93,7 @@ export class MainComponent implements OnInit {
   }
 
   openNewPersonDialog() {
-    const person: Partial<Person> = { birthDate: '2009-08-04', email: 'dsf@dfg.com', firstName: 'sdfefw', gender: 'female', lastName: 'fdfd' };
+    const person: Partial<Person> = { birthDate: '', email: '', firstName: '', gender: '', lastName: '' };
     const dialogRef = this.dialog.open(DialogComponent, { data: person });
     dialogRef.afterClosed().pipe(
       filter(Boolean),
