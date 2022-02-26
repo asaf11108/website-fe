@@ -1,10 +1,8 @@
-import { CarService } from './../shared/api/services/car.service';
-import { PeopleService } from './../shared/api/services/people.service';
 import { filter, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, ObservableInput } from 'rxjs';
 import { TABLE_CONFIG } from './main.config';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Person } from '../shared/api/model/person';
+import { PeopleService, CarsService, Person, Car, PersonDto } from '../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/components/dialog/dialog.component';
@@ -12,7 +10,6 @@ import { omit } from 'lodash';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tapCatch } from '../shared/util/custom-rxjs';
 import { formatISO } from 'date-fns';
-import { Car } from '../shared/api/model/car';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +35,7 @@ export class MainComponent implements OnInit {
 
   constructor(
     private peopleService: PeopleService,
-    private carService: CarService,
+    private carsService: CarsService,
     private dialog: MatDialog
   ) { }
 
@@ -48,15 +45,21 @@ export class MainComponent implements OnInit {
       tap(() => this.loading$.next(true)),
       switchMap((date: Date) =>
         date
-          ? this.peopleService.getPersonByBirthDate(formatISO(date, { representation: 'date' }))
-          : this.peopleService.getPeople()
+          ? this.peopleService.personControllerFindQuery(
+              null,
+              null,
+              null,
+              null,
+              formatISO(date, { representation: 'date' })
+            )
+          : this.peopleService.personControllerFindQuery()
       ),
       tap(people => this.poeple$.next(people)),
       tapCatch(() => this.loading$.next(false)),
       untilDestroyed(this)
     ).subscribe();
 
-    this.carService.getCars().subscribe(cars => this.cars = cars);
+    this.carsService.carControllerFind().subscribe(cars => this.cars = cars);
   }
 
   onTableClick(event) {
@@ -67,7 +70,7 @@ export class MainComponent implements OnInit {
         const dialogRef = this.dialog.open(DialogComponent, { data: person });
         dialogRef.afterClosed().pipe(
           tap(() => this.loading$.next(true)),
-          switchMap<Person, ObservableInput<Person>>(person => this.peopleService.patchPerson(event.row.id, person).pipe(mapTo(person))),
+          switchMap<Person, ObservableInput<Person>>(person => this.peopleService.personControllerPatch(event.row.id, person).pipe(mapTo(person))),
           withLatestFrom(this.poeple$),
           tap((([person, people]) => {
             const index = people.findIndex(person => person.id === id);
@@ -79,7 +82,7 @@ export class MainComponent implements OnInit {
         break;
       case 'delete':
         this.loading$.next(true)
-        this.peopleService.deletePerson(id).pipe(
+        this.peopleService.personControllerDelete(id).pipe(
           withLatestFrom(this.poeple$),
           tap((([_, people]) => {
             const index = people.findIndex(person => person.id === id);
@@ -93,11 +96,11 @@ export class MainComponent implements OnInit {
   }
 
   openNewPersonDialog() {
-    const person: Partial<Person> = { birthDate: '', email: '', firstName: '', gender: '', lastName: '' };
+    const person: PersonDto = { birthDate: '', email: '', firstName: '', gender: 'male', lastName: '' };
     const dialogRef = this.dialog.open(DialogComponent, { data: person });
     dialogRef.afterClosed().pipe(
       filter(Boolean),
-      switchMap(person => this.peopleService.postPerson(person)),
+      switchMap((person: PersonDto) => this.peopleService.personControllerCreate(person)),
       withLatestFrom(this.poeple$),
       tap((([person, people]) => this.poeple$.next(people.concat(person)))),
       untilDestroyed(this)
