@@ -9,25 +9,23 @@
   @include position(50%, 50%);
 }
 
-.repository {
+.links {
+  @include position(90%, 90%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 20px;
+
+  .repository {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    img {
+      width: 50px;
+      height: 50px;
+    }
   
-  &:nth-of-type(1) {
-    @include position(95%, 95%);
-  }
-
-  &:nth-of-type(2) {
-    @include position(90%, 95%);
-  }
-
-  img {
-    width: 50px;
-    height: 50px;
-  }
-
-  @media (max-width: 600px) {
-    display: none;
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 }
