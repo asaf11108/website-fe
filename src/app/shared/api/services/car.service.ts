@@ -8,7 +8,7 @@ import { Car } from '../model/car';
   providedIn: 'root'
 })
 export class CarService {
-  url = environment.apiUrl + 'cars';
+  url = environment.basePath + '/api/cars';
 
   constructor(private http: HttpClient) { }
 

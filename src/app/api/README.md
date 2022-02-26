@@ -103,7 +103,7 @@ import { ApiModule, Configuration } from '';
         provide: Configuration,
         useFactory: (authService: AuthService) => new Configuration(
           {
-            basePath: environment.apiUrl,
+            basePath: environment.basePath,
             accessToken: authService.getAccessToken.bind(authService)
           }
         ),

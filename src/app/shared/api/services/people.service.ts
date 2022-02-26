@@ -9,7 +9,7 @@ import { Person } from '../model/person';
   providedIn: 'root'
 })
 export class PeopleService {
-  url = environment.apiUrl + 'people';
+  url = environment.basePath + '/api/people';
 
   constructor(private http: HttpClient) { }
 

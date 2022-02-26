@@ -12,7 +12,7 @@ import { AuthModule as Auth0Module } from '@auth0/auth0-angular';
       httpInterceptor: {
         allowedList: [
           {
-            uri: `${environment.apiUrl}*`,
+            uri: `${environment.basePath}/api/*`,
             tokenOptions: {
               audience: environment.audience,
             }

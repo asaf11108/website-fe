@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   feUrl: 'http://localhost:4200/',
-  apiUrl: 'http://localhost:3333/api/',
+  basePath: 'http://localhost:3333',
   audience: 'https://asaf-websites.herokuapp.com/'
 };
 

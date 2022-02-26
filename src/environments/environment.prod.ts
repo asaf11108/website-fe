@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   feUrl: 'https://master.dfvotadpmompb.amplifyapp.com/',
-  apiUrl: 'https://asaf-websites.herokuapp.com/api/',
+  basePath: 'https://asaf-websites.herokuapp.com',
   audience: 'https://asaf-websites.herokuapp.com/'
 };
