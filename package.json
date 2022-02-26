@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:api": "openapi-generator-cli generate -i https://asaf-websites.herokuapp.com/api-json -g typescript-angular -o src/app/api"
   },
   "private": true,
   "dependencies": {
@@ -34,9 +35,10 @@
     "@angular-devkit/build-angular": "~12.2.12",
     "@angular/cli": "~12.2.12",
     "@angular/compiler-cli": "~12.2.0",
+    "@openapitools/openapi-generator-cli": "^2.4.26",
     "@types/jasmine": "~3.8.0",
-    "@types/node": "^12.11.1",
     "@types/lodash": "^4.14.178",
+    "@types/node": "^12.11.1",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
