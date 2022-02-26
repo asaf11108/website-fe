@@ -213,7 +213,6 @@ export class PeopleService {
         }
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/people/${encodeURIComponent(String(id))}`,
-            null,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
