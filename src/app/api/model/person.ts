@@ -10,23 +10,16 @@
  * Do not edit the class manually.
  */
 import { Car } from './car';
+import { Gender } from './gender';
 
 
 export interface Person { 
+    gender: Gender;
     id: number;
     firstName: string;
     lastName: string;
     email: string;
-    gender: Person.GenderEnum;
     birthDate: string;
     car: Car;
 }
-export namespace Person {
-    export type GenderEnum = 'male' | 'female';
-    export const GenderEnum = {
-        Male: 'male' as GenderEnum,
-        Female: 'female' as GenderEnum
-    };
-}
-
 

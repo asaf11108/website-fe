@@ -19,6 +19,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { Gender } from '../model/gender';
+// @ts-ignore
 import { Person } from '../model/person';
 // @ts-ignore
 import { PersonDto } from '../model/personDto';
@@ -288,20 +290,25 @@ export class PeopleService {
     }
 
     /**
+     * @param gender 
      * @param firstName 
      * @param lastName 
      * @param email 
-     * @param gender 
      * @param birthDate 
+     * @param carId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public personControllerFindQuery(firstName?: string, lastName?: string, email?: string, gender?: 'male' | 'female', birthDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Person>>;
-    public personControllerFindQuery(firstName?: string, lastName?: string, email?: string, gender?: 'male' | 'female', birthDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Person>>>;
-    public personControllerFindQuery(firstName?: string, lastName?: string, email?: string, gender?: 'male' | 'female', birthDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Person>>>;
-    public personControllerFindQuery(firstName?: string, lastName?: string, email?: string, gender?: 'male' | 'female', birthDate?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public personControllerFindQuery(gender?: Gender, firstName?: string, lastName?: string, email?: string, birthDate?: string, carId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Person>>;
+    public personControllerFindQuery(gender?: Gender, firstName?: string, lastName?: string, email?: string, birthDate?: string, carId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Person>>>;
+    public personControllerFindQuery(gender?: Gender, firstName?: string, lastName?: string, email?: string, birthDate?: string, carId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Person>>>;
+    public personControllerFindQuery(gender?: Gender, firstName?: string, lastName?: string, email?: string, birthDate?: string, carId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (gender !== undefined && gender !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>gender, 'gender');
+        }
         if (firstName !== undefined && firstName !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>firstName, 'firstName');
@@ -314,13 +321,13 @@ export class PeopleService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>email, 'email');
         }
-        if (gender !== undefined && gender !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>gender, 'gender');
-        }
         if (birthDate !== undefined && birthDate !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>birthDate, 'birthDate');
+        }
+        if (carId !== undefined && carId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>carId, 'carId');
         }
 
         let localVarHeaders = this.defaultHeaders;

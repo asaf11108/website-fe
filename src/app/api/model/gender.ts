@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Gender } from './gender';
 
 
-export interface PersonDto { 
-    gender: Gender;
-    firstName: string;
-    lastName: string;
-    email: string;
-    birthDate: string;
-    carId?: number;
-}
+export type Gender = 'male' | 'female';
+
+export const Gender = {
+    Male: 'male' as Gender,
+    Female: 'female' as Gender
+};
 
